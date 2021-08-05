@@ -3,6 +3,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ForbiddenExceptionFilter } from './config/filters/http-exception.filter';
 import { AuthGuard } from './config/guards/auth.guard';
+import { ErrorsInterceptor } from './config/interceptors/errors.interceptor';
+import { LoggingInterceptor } from './config/interceptors/logging.interceptor';
+import { TransformInterceptor } from './config/interceptors/transform.interceptor';
 import { loggerFunctionMiddleware } from './config/middlewares/logger-function.middleware';
 
 declare const module: any;
@@ -19,6 +22,7 @@ async function bootstrap() {
 		}),
 	); // 전역에서 발생하는 라우트 핸들링에 대해서 위 설정으로 pipe 처리 --> (global-scoped)
 	// app.useGlobalGuards(new AuthGuard()); // 전역에서 발생하는 request에 대해서 인증 처리 --> (global-scoped)
+	app.useGlobalInterceptors(new LoggingInterceptor(), new TransformInterceptor(), new ErrorsInterceptor());
 	await app.listen(3000);
 
 	if (module.hot) {

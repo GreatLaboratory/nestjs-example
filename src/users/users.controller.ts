@@ -46,13 +46,12 @@ export class UsersController {
 	// @UsePipes(new ValidationPipe()) --> 특정 라우트 핸들러에만 필터를 적용시킬 수 있다. (method-scoped)
 	// create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) { --> 특정 파라미터에만 파이프를 적용시킬 수 있다. (parameter-scoped)
 	create(@Body() createUserDto: CreateUserDto) {
-		// throw new ForbiddenException(); // custom filter
 		return this.usersService.create(createUserDto);
 	}
 
 	@Get()
 	findAll() {
-		throw new ConflictException(); // standard filter
+		throw new ForbiddenException(); // standard filter
 		return this.usersService.findAll();
 	}
 
