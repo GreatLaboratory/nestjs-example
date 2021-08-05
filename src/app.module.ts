@@ -3,9 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { DogsModule } from './dogs/dogs.module';
-import { loggerClassMiddleware } from './middlewares/logger-class.middleware';
+import { loggerClassMiddleware } from './config/middlewares/logger-class.middleware';
 import { UsersController } from './users/users.controller';
-import { loggerFunctionMiddleware } from './middlewares/logger-function.middleware';
+import { loggerFunctionMiddleware } from './config/middlewares/logger-function.middleware';
 
 @Module({
 	imports: [UsersModule, DogsModule],

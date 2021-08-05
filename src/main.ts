@@ -1,8 +1,9 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ForbiddenExceptionFilter } from './filters/http-exception.filter';
-import { loggerFunctionMiddleware } from './middlewares/logger-function.middleware';
+import { ForbiddenExceptionFilter } from './config/filters/http-exception.filter';
+import { AuthGuard } from './config/guards/auth.guard';
+import { loggerFunctionMiddleware } from './config/middlewares/logger-function.middleware';
 
 declare const module: any;
 
@@ -17,6 +18,7 @@ async function bootstrap() {
 			forbidNonWhitelisted: true, // request json에 필요없는 변수가 들어오면 should not exist 에러 발생
 		}),
 	); // 전역에서 발생하는 라우트 핸들링에 대해서 위 설정으로 pipe 처리 --> (global-scoped)
+	// app.useGlobalGuards(new AuthGuard()); // 전역에서 발생하는 request에 대해서 인증 처리 --> (global-scoped)
 	await app.listen(3000);
 
 	if (module.hot) {
