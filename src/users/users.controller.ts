@@ -28,6 +28,8 @@ import { Response, Request } from 'express';
 import { RoleGuard } from 'src/config/guards/roles.guard';
 import { AuthGuard } from 'src/config/guards/auth.guard';
 import { Roles } from 'src/config/decorators/roles.decorator';
+import { User } from 'src/config/decorators/user.decorator';
+import { UserEntity } from './entities/user.entity';
 
 @UseGuards(AuthGuard, RoleGuard) // --> 이 컨트롤러에 들어오는 request에 대해서 인증 및 role 인가 처리 (controller-scoped)
 // @UseFilters(ForbiddenExceptionFilter) --> 이 컨트롤러에서 ForbiddenException 발생하면 전부 ForbiddenExceptionFilter로 예외처리 (controller-scoped)
@@ -50,7 +52,15 @@ export class UsersController {
 	}
 
 	@Get()
-	findAll() {
+	findAll(
+		@User(new ValidationPipe({ validateCustomDecorators: true })) user: UserEntity, // pipe와 결합하여 사용 가능하다. 대신 해당 옵션을 줘야 한다.
+		@User('roles') roles: string[],
+	) {
+		console.log('user :::', user);
+		for (const role of roles) {
+			console.log('role :::', role);
+		}
+
 		throw new ForbiddenException(); // standard filter
 		return this.usersService.findAll();
 	}

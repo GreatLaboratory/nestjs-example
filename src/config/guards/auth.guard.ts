@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -14,9 +15,13 @@ export class AuthGuard implements CanActivate {
 		if (!request) return false;
 		// 원래는 request header의 토큰값으로 validate검사를 한 후 user를 찾아서 request.user에 해당 user객체를 주입해야 한다.
 		// 현재는 로그인 로직없이 이후 role에 대한 인가 처리를 위해 임시로 user 객체 주입
-		request.user = {
+		const user: UserEntity = {
+			id: 1,
+			name: 'wayne',
+			email: 'cartopia@naver.com',
 			roles: ['guest'],
 		};
+		request.user = user;
 		return true;
 	}
 }
